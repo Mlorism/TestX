@@ -1,2 +1,3 @@
 # TestX
-Simple application to test how to write using MVVM pattern.
+Simple application to test how to work with MVVM pattern and MahApps.Metro UI elements.
+
