@@ -1,0 +1,93 @@
+﻿<Controls:MetroWindow x:Class="TestX.MainWindow"
+                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                      xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
+                      xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+                      xmlns:local="clr-namespace:TestX"                      
+                      xmlns:inter="clr-namespace:TestX.Interfaces"
+                      xmlns:Pages="clr-namespace:TestX.Views"
+                      xmlns:VMod="clr-namespace:TestX.ViewModels"
+                     
+                      mc:Ignorable="d"
+                      Title="MainWindow"
+                      Height="500"
+                      Width="auto">
+
+    <Controls:MetroWindow.IconTemplate>
+        <DataTemplate>
+            <iconPacks:PackIconMaterial Width="{TemplateBinding Width}"
+                                        Height="{TemplateBinding Height}"
+                                        Margin="4"
+                                        Foreground="{DynamicResource IdealForegroundColorBrush}"
+                                        Kind="SkullCrossbones" />
+        </DataTemplate>
+    </Controls:MetroWindow.IconTemplate>
+    
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Grid.Column="0"
+                    Margin="5">
+            <DockPanel>
+                <Menu DockPanel.Dock="Top">
+                    <MenuItem Header="Program">
+                        <MenuItem Header="Sign out"
+                                  Command="{Binding SignOutCommand}"/>
+                    </MenuItem>
+                </Menu>
+            </DockPanel>
+            <Controls:ToggleSwitch Header="Theme"
+                                   OnLabel="Dark"
+                                   OffLabel="Light"
+                                   Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}"
+                                   IsCheckedChanged="ToggleSwitch_Theme" />
+            <StackPanel Margin="5">
+                <TextBlock Text="Logged user Id:" />
+                <TextBlock Text="{Binding LoggedInUserId}"
+                           FontSize="20" />
+            </StackPanel>
+        </StackPanel>
+
+        <StackPanel Grid.Column="1"
+                    HorizontalAlignment="Center">
+            
+            <TabControl 
+                        ItemsSource="{Binding Tabs}" 
+                        SelectedIndex="0">   
+                
+                <TabControl.Resources>
+                    <DataTemplate DataType="{x:Type VMod:AdminViewModel}">
+                        <Pages:AdminView/>
+                    </DataTemplate>                    
+                    <DataTemplate DataType="{x:Type VMod:EmployeeViewModel}">
+                        <Pages:EmployeeView/>
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type VMod:MessageViewModel}">
+                        <Pages:MessagesView />
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type VMod:ProductViewModel}">
+                        <Pages:ProductView />
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type VMod:OptionsViewModel}">
+                        <Pages:OptionsView />
+                    </DataTemplate>
+                </TabControl.Resources>              
+
+                <TabControl.ItemTemplate>
+                    <DataTemplate DataType="{x:Type inter:ITab}">
+                        <TextBlock>
+                            <Run Text="{Binding TabName}" />
+                        </TextBlock>
+                    </DataTemplate>
+                </TabControl.ItemTemplate>  
+                
+            </TabControl>
+            
+        </StackPanel>
+    </Grid>
+</Controls:MetroWindow>

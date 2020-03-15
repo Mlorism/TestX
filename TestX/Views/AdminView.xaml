@@ -1,0 +1,95 @@
+﻿<UserControl x:Class="TestX.Views.AdminView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:System="clr-namespace:System;assembly=mscorlib"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             xmlns:enums="clr-namespace:TestX.Enumerators"                       
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">   
+    
+    <!--#region Resources-->
+    <UserControl.Resources>
+        <ObjectDataProvider x:Key="UserType"
+                            MethodName="GetValues"
+                            ObjectType="{x:Type System:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="enums:UserType" />
+            </ObjectDataProvider.MethodParameters>            
+        </ObjectDataProvider>
+    </UserControl.Resources>
+    <!--endregion-->
+    
+    <Grid>
+        <Border BorderThickness="1"
+                BorderBrush="Black">
+            <StackPanel Orientation="Horizontal"
+                        Margin="5">
+
+                <StackPanel Margin="5">
+                    <DataGrid x:Name="Users"
+                              ItemsSource="{Binding Path=Users}"
+                              AutoGenerateColumns="False"
+                              IsReadOnly="True"
+                              Width="auto">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="MouseLeftButtonUp">
+                                <i:InvokeCommandAction Command="{Binding ChooseCurrentUserCommand}"
+                                                       CommandParameter="{Binding ElementName=Users, Path=SelectedItem}" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Id"
+                                                Binding="{Binding Id}" />
+                            <DataGridTextColumn Header="Login"
+                                                Binding="{Binding Login}"/>
+                            <DataGridTextColumn Header="Type"
+                                                Binding="{Binding Type}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </StackPanel>
+
+                <StackPanel Width="150">
+                    <TextBlock Text="User Id:"
+                               Margin="5" />
+                    <TextBlock Text="{Binding Id}" />
+                    <TextBlock Text="User Name:"
+                               Margin="5" />
+                    <TextBox Text="{Binding Login, 
+                                    UpdateSourceTrigger=PropertyChanged}" />
+                    <TextBlock Text="User Password:"
+                               Margin="5" />
+                    <TextBox Text="{Binding Password,
+                                    UpdateSourceTrigger=PropertyChanged}" />
+                    <TextBlock Text="User Type:"
+                               Margin="5" />
+                    <ComboBox  ItemsSource="{Binding Source={StaticResource UserType}}"
+                               SelectedValue="{Binding Type}" />
+                </StackPanel>
+
+                <StackPanel Margin="5" Width="auto">
+                    <Button Content="New User"
+                            Margin="5"
+                            
+                            Style="{StaticResource AccentedSquareButtonStyle}"
+                            Command="{Binding  ClearDataCommand}"/>
+                    <Button Content="Save User"
+                            Margin="5"
+                            
+                            Style="{StaticResource SquareButtonStyle}"
+                            Command="{Binding SaveUserCommand}" />
+                    <Button Content="delete user"
+                            Margin="5"
+                            Style="{StaticResource SquareButtonStyle}"
+                            Command="{Binding DeleteUserCommand}" />
+                    <Button Content="sign in"
+                            Margin="5"
+                            Style="{StaticResource SquareButtonStyle}"
+                            Command="{Binding SignInUserCommand}"/>
+                </StackPanel>
+
+            </StackPanel>
+        </Border>    
+    </Grid>
+</UserControl>
